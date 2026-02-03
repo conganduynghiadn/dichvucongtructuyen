@@ -7,8 +7,8 @@
 // ===========================================
 // SUPABASE CONFIGURATION
 // ===========================================
-const SUPABASE_URL = 'https://ablxkfcrtyhogqjptqpi.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFibHhrZmNydHlob2dxanB0cXBpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAwNTUyMjIsImV4cCI6MjA4NTYzMTIyMn0.ZJw2GsGWYqWS0W5zkWkr7-r83VlgfzsvWoI3UaX5WSA';
+const SUPABASE_URL = 'https://ihaazciiotecnityaqrk.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImloYWF6Y2lpb3RlY25pdHlhcXJrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAwNTg0NDEsImV4cCI6MjA4NTYzNDQ0MX0.Hu0xpsc70ZswlQCsm9_exqTdLLqjfzzF072XrNYwK0g';
 
 // Initialize Supabase client
 let supabaseClient = null;
@@ -347,4 +347,5 @@ function initAnimations() {
         }
     `;
     document.head.appendChild(style);
-}
+}"Update Supabase credentials"
+
