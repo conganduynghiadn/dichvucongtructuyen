@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Công an xã Duy Nghĩa - Thành phố Đà Nẵng. Dịch vụ công trực tuyến, hỗ trợ người dân.">
+    <title>Công an xã Duy Nghĩa - Thành phố Đà Nẵng</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Hero Section -->
+    <header class="hero" id="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="logo-container">
+                <img src="logo-cong-an-vector-1.png" alt="Logo Công an nhân dân Việt Nam" class="logo">
+            </div>
+            <h1 class="hero-title">Công an xã Duy Nghĩa</h1>
+            <h2 class="hero-subtitle">Thành phố Đà Nẵng</h2>
+            <div class="hotline">
+                <img src="phone-icon.png" alt="Phone" class="hotline-icon">
+                <span>Số điện thoại trực ban Công an xã: <strong>02353.730.555</strong></span>
+            </div>
+            <p class="slogan">
+                "Công an Duy Nghĩa rèn đạo đức, luyện tác phong, trọng danh dự; đổi mới, nêu gương, kỷ cương, trách
+                nhiệm, vì nước quên thân, vì dân phục vụ!"
+            </p>
+        </div>
+        <div class="hero-wave">
+            <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+                <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="#ffffff" />
+            </svg>
+        </div>
+    </header>
+
+    <!-- Services Section -->
+    <section class="services" id="services">
+        <div class="container">
+            <h2 class="section-title">ĐĂNG KÝ DỊCH VỤ CÔNG TRỰC TUYẾN</h2>
+            <div class="services-grid">
+                <!-- Service 1 -->
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3 class="service-title">ĐĂNG KÝ XE TRỰC TUYẾN TOÀN TRÌNH</h3>
+                        <a href="https://dichvucong.gov.vn/p/home/dvc-chi-tiet-thu-tuc-nganh-doc.html?ma_thu_tuc=1.012575"
+                            target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                            <i class="fas fa-external-link-alt"></i> Tại đây
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-id-card"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3 class="service-title">ĐỔI GIẤY PHÉP LÁI XE TRỰC TUYẾN</h3>
+                        <a href="https://dichvucong.gov.vn/p/home/dvc-chi-tiet-thu-tuc-nganh-doc.html?ma_thu_tuc=3.000347"
+                            target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                            <i class="fas fa-external-link-alt"></i> Tại đây
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3 class="service-title">CẤP LẠI GIẤY PHÉP LÁI XE</h3>
+                        <a href="https://dichvucong.gov.vn/p/home/dvc-chi-tiet-thu-tuc-nganh-doc.html?ma_thu_tuc=3.000348"
+                            target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                            <i class="fas fa-external-link-alt"></i> Tại đây
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Feedback Section -->
+    <section class="feedback" id="feedback">
+        <div class="container">
+            <h2 class="section-title">PHẢN ÁNH KHÓ KHĂN, VƯỚNG MẮC</h2>
+            <div class="feedback-wrapper">
+                <form id="feedbackForm" class="feedback-form">
+                    <div class="form-group">
+                        <label for="fullName">
+                            <i class="fas fa-user"></i> Họ và tên <span class="required">*</span>
+                        </label>
+                        <input type="text" id="fullName" name="fullName" placeholder="Nhập họ và tên của bạn" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phoneNumber">
+                            <i class="fas fa-phone"></i> Số điện thoại <span class="required">*</span>
+                        </label>
+                        <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="Nhập số điện thoại" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="procedureDate">
+                            <i class="fas fa-calendar-alt"></i> Ngày thực hiện thủ tục <span class="required">*</span>
+                        </label>
+                        <input type="date" id="procedureDate" name="procedureDate" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="procedureType">
+                            <i class="fas fa-list-alt"></i> Thủ tục đăng ký thực hiện <span class="required">*</span>
+                        </label>
+                        <select id="procedureType" name="procedureType" required>
+                            <option value="">-- Chọn thủ tục --</option>
+                            <option value="dang_ky_xe">Đăng ký xe lần đầu trực tuyến</option>
+                            <option value="doi_gplx">Đổi giấy phép lái xe trực tuyến</option>
+                            <option value="cap_lai_gplx">Cấp lại giấy phép lái xe</option>
+                            <option value="khac">Thủ tục khác</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="notes">
+                            <i class="fas fa-comment-alt"></i> Khó khăn, vướng mắc
+                        </label>
+                        <textarea id="notes" name="notes" rows="4"
+                            placeholder="Mô tả chi tiết khó khăn, vướng mắc của bạn..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-submit">
+                        <i class="fas fa-paper-plane"></i> Gửi phản ánh
+                    </button>
+                </form>
+
+                <div class="feedback-info">
+                    <div class="info-card">
+                        <i class="fas fa-shield-alt"></i>
+                        <h4>Bảo mật thông tin</h4>
+                        <p>Mọi thông tin của bạn sẽ được bảo mật tuyệt đối</p>
+                    </div>
+                    <div class="info-card">
+                        <i class="fas fa-clock"></i>
+                        <h4>Phản hồi nhanh chóng</h4>
+                        <p>Chúng tôi sẽ liên hệ lại trong vòng 24 giờ</p>
+                    </div>
+                    <div class="info-card">
+                        <i class="fas fa-headset"></i>
+                        <h4>Hỗ trợ 24/7</h4>
+                        <p>Đường dây nóng: 02353.730.555</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-wave">
+            <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+                <path d="M0,60 C360,0 1080,120 1440,60 L1440,0 L0,0 Z" fill="#ffffff" />
+            </svg>
+        </div>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4><i class="fas fa-map-marker-alt"></i> Địa chỉ</h4>
+                    <p>Thôn Thuận An, xã Duy Nghĩa, thành phố Đà Nẵng</p>
+                </div>
+
+                <div class="footer-col">
+                    <h4><i class="fas fa-address-book"></i> Liên hệ</h4>
+                    <p><i class="fas fa-phone"></i> 02353.730.555</p>
+                    <p>
+                        <i class="fab fa-facebook"></i>
+                        <a href="https://facebook.com/conganxaduynghia" target="_blank">Công an xã Duy Nghĩa</a>
+                    </p>
+                </div>
+
+                <div class="footer-col">
+                    <h4><i class="fas fa-clock"></i> Giờ làm việc</h4>
+                    <p>Thứ 2 - Thứ 6</p>
+                    <p class="working-hours">07:00 - 17:00</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="container">
+                <p>&copy; 2026 Công an xã Duy Nghĩa - Thành phố Đà Nẵng. Tất cả các quyền được bảo lưu.</p>
+                <p class="designer-credit">Thiết kế bởi Trần Duy - 0932.404.313</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
