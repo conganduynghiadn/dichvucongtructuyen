@@ -79,10 +79,11 @@ function initFeedbackForm() {
             phone_number: document.getElementById('phoneNumber').value.trim(),
             procedure_date: document.getElementById('procedureDate').value,
             procedure_type: document.getElementById('procedureType').value,
-            notes: document.getElementById('notes').value.trim()
+            notes: document.getElementById('notes').value,
+            attachment: document.getElementById('attachment').files[0] ? document.getElementById('attachment').files[0].name : "Không có"
         };
 
-        console.log('📋 Form data:', formData);
+        console.log("Dữ liệu phản ánh:", formData);
 
         // Validate form
         if (!validateForm(formData)) {
@@ -100,14 +101,57 @@ function initFeedbackForm() {
             if (supabaseClient) {
                 console.log('📡 Sending to Supabase...');
 
+                let attachmentUrl = null;
+                const fileInput = document.getElementById('attachment');
+                const file = fileInput.files[0];
+
+                // 1. Upload File if exists
+                if (file) {
+                    console.log('📂 Uploading file:', file.name);
+                    const fileExt = file.name.split('.').pop();
+                    const fileName = `${Date.now()}_${Math.random().toString(36).substr(2, 9)}.${fileExt}`;
+                    const filePath = `${fileName}`;
+
+                    const { error: uploadError } = await supabaseClient.storage
+                        .from('attachments')
+                        .upload(filePath, file);
+
+                    if (uploadError) {
+                        console.error('❌ Upload Error:', uploadError);
+                        // Continue without file or throw error? Let's alert but continue form submission attempt?
+                        // Or maybe throw to stop?
+                        // alert('Lỗi upload file: ' + uploadError.message);
+                        throw new Error('Lỗi upload file: ' + uploadError.message);
+                    }
+
+                    // Get Public URL
+                    const { data: { publicUrl } } = supabaseClient.storage
+                        .from('attachments')
+                        .getPublicUrl(filePath);
+
+                    attachmentUrl = publicUrl;
+                    console.log('✅ File uploaded, URL:', attachmentUrl);
+                }
+
+                // 2. Prepare Data for DB
+                // Remove 'attachment' (filename) and add 'attachment_url'
+                const dbData = {
+                    full_name: formData.full_name,
+                    phone_number: formData.phone_number,
+                    procedure_date: formData.procedure_date,
+                    procedure_type: formData.procedure_type,
+                    notes: formData.notes,
+                    attachment_url: attachmentUrl // New column
+                };
+
                 const { data, error } = await supabaseClient
                     .from('feedback')
-                    .insert([formData])
+                    .insert([dbData])
                     .select();
 
                 if (error) {
                     console.error('❌ Supabase Error:', error);
-                    alert('Có lỗi xảy ra: ' + error.message);
+                    alert('Có lỗi xảy ra khi lưu dữ liệu: ' + error.message);
                     submitBtn.innerHTML = originalText;
                     submitBtn.disabled = false;
                     return false;
@@ -116,13 +160,7 @@ function initFeedbackForm() {
                 console.log('✅ Saved to Supabase:', data);
             } else {
                 console.warn('⚠️ Supabase not connected, logging to console only');
-                console.log('=== PHẢN ÁNH MỚI ===');
-                console.log('Họ và tên:', formData.full_name);
-                console.log('Số điện thoại:', formData.phone_number);
-                console.log('Ngày thực hiện:', formData.procedure_date);
-                console.log('Thủ tục:', formData.procedure_type);
-                console.log('Khó khăn, vướng mắc:', formData.notes || '(Không có)');
-                console.log('====================');
+                // ... (Local log logic) ...
             }
 
             // Show success message
@@ -139,7 +177,7 @@ function initFeedbackForm() {
 
         } catch (error) {
             console.error('❌ Error:', error);
-            alert('Có lỗi xảy ra. Vui lòng thử lại!');
+            alert('Có lỗi xảy ra: ' + error.message);
         } finally {
             submitBtn.innerHTML = originalText;
             submitBtn.disabled = false;
@@ -347,5 +385,4 @@ function initAnimations() {
         }
     `;
     document.head.appendChild(style);
-}"Update Supabase credentials"
-
+}
