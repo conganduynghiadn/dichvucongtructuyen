@@ -64,8 +64,10 @@ function renderTable(data) {
         const tr = document.createElement('tr');
         const created = new Date(item.created_at).toLocaleString('vi-VN');
         const attachment = item.attachment_url
-            ? `<a href="${item.attachment_url}" target="_blank" style="color:red">Xem File</a>`
-            : 'Không';
+            ? `<a href="${item.attachment_url}" target="_blank" title="Xem ảnh gốc">
+                 <img src="${item.attachment_url}" alt="Ảnh" style="height:60px; width:auto; border-radius:4px; border:1px solid #ddd; object-fit:cover;">
+               </a>`
+            : '<span style="color:#999; font-size:0.9rem">Không có</span>';
 
         tr.innerHTML = `
             <td>${created}</td>
