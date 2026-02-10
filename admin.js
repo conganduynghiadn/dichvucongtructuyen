@@ -74,7 +74,45 @@ function renderTable(data) {
             <td>${item.procedure_type || ''}</td>
             <td>${item.notes || ''}</td>
             <td>${attachment}</td>
+            <td>
+                <button onclick="openEditModal('${item.id}', '${item.full_name || ''}', '${item.attachment_url || ''}')" style="background:#2196F3; color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer;">
+                    <i class="fas fa-edit"></i> Sửa
+                </button>
+            </td>
         `;
         tbody.appendChild(tr);
     });
+}
+
+function openEditModal(id, name, currentUrl) {
+    document.getElementById('editId').value = id;
+    document.getElementById('editName').value = name;
+    document.getElementById('editImage').value = currentUrl;
+    document.getElementById('editModal').style.display = 'flex';
+}
+
+function closeEditModal() {
+    document.getElementById('editModal').style.display = 'none';
+}
+
+async function saveEdit() {
+    const id = document.getElementById('editId').value;
+    const newUrl = document.getElementById('editImage').value;
+    
+    if (!id) return;
+
+    try {
+        const { error } = await supabaseClient
+            .from('feedback')
+            .update({ attachment_url: newUrl })
+            .eq('id', id);
+
+        if (error) throw error;
+
+        alert('Cập nhật thành công!');
+        closeEditModal();
+        fetchData(); // Reload data
+    } catch (err) {
+        alert('Lỗi cập nhật: ' + err.message);
+    }
 }
