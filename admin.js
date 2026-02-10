@@ -2,7 +2,7 @@ const SUPABASE_URL = 'https://ihaazciiotecnityaqrk.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImloYWF6Y2lpb3RlY25pdHlhcXJrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAwNTg0NDEsImV4cCI6MjA4NTYzNDQ0MX0.Hu0xpsc70ZswlQCsm9_exqTdLLqjfzzF072XrNYwK0g';
 
 let supabaseClient;
-const ADMIN_PASS = '123'; // Mật khẩu đơn giản
+const ADMIN_PASS = 'Duynghia@2026'; // Mật khẩu đơn giản
 
 document.addEventListener('DOMContentLoaded', () => {
     if (typeof supabase !== 'undefined') {
