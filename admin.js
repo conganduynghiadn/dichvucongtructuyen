@@ -1,23 +1,14 @@
+const SUPABASE_URL = 'https://ihaazciiotecnityaqrk.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImloYWF6Y2lpb3RlY25pdHlhcXJrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAwNTg0NDEsImV4cCI6MjA4NTYzNDQ0MX0.Hu0xpsc70ZswlQCsm9_exqTdLLqjfzzF072XrNYwK0g';
 
+let supabaseClient;
 const ADMIN_PASS = 'Duynghia@2026'; // Mật khẩu đơn giản
 
-// Initial dummy data if localStorage is empty
-const DUMMY_DATA = [
-    {
-        id: 1,
-        created_at: new Date().toISOString(),
-        full_name: 'Nguyễn Văn A',
-        phone_number: '0901234567',
-        procedure_type: 'Đăng ký thường trú',
-        notes: 'Hồ sơ đầy đủ',
-        attachment_url: 'https://via.placeholder.com/150'
-    }
-];
-
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize data if not present
-    if (!localStorage.getItem('feedback_data')) {
-        localStorage.setItem('feedback_data', JSON.stringify(DUMMY_DATA));
+    if (typeof supabase !== 'undefined') {
+        supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    } else {
+        alert('Lỗi: Không tải được thư viện Supabase');
     }
 
     // Check login state
@@ -42,20 +33,21 @@ function showDashboard() {
     fetchData();
 }
 
-function fetchData() {
+async function fetchData() {
     const tbody = document.getElementById('tableBody');
-    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center">Đang tải...</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center">Đang tải...</td></tr>';
 
     try {
-        const storedData = localStorage.getItem('feedback_data');
-        const data = storedData ? JSON.parse(storedData) : [];
+        const { data, error } = await supabaseClient
+            .from('feedback')
+            .select('*')
+            .order('created_at', { ascending: false });
 
-        // Sort by created_at desc
-        data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+        if (error) throw error;
 
         renderTable(data);
     } catch (err) {
-        tbody.innerHTML = `<tr><td colspan="7" style="color:red">Lỗi: ${err.message}</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" style="color:red">Lỗi: ${err.message}</td></tr>`;
     }
 }
 
@@ -64,18 +56,16 @@ function renderTable(data) {
     tbody.innerHTML = '';
 
     if (!data || data.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center">Chưa có dữ liệu</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center">Chưa có dữ liệu</td></tr>';
         return;
     }
 
     data.forEach(item => {
         const tr = document.createElement('tr');
         const created = new Date(item.created_at).toLocaleString('vi-VN');
-
-        let attachmentHtml = 'Không có ảnh';
-        if (item.attachment_url) {
-            attachmentHtml = `<img src="${item.attachment_url}" alt="Ảnh đính kèm" style="max-height: 100px; max-width: 150px; border-radius: 4px; border: 1px solid #ddd;">`;
-        }
+        const attachment = item.attachment_url
+            ? `<a href="${item.attachment_url}" target="_blank" style="color:red">Xem File</a>`
+            : 'Không';
 
         tr.innerHTML = `
             <td>${created}</td>
@@ -83,50 +73,8 @@ function renderTable(data) {
             <td>${item.phone_number || ''}</td>
             <td>${item.procedure_type || ''}</td>
             <td>${item.notes || ''}</td>
-            <td>${attachmentHtml}</td>
-            <td>
-                <button onclick="openEditModal(${item.id})" style="padding: 5px 10px; background: #2196F3; color: white; border: none; border-radius: 3px; cursor: pointer;">Sửa</button>
-            </td>
+            <td>${attachment}</td>
         `;
         tbody.appendChild(tr);
     });
-}
-
-// Edit Modal Functions
-function openEditModal(id) {
-    const storedData = localStorage.getItem('feedback_data');
-    const data = storedData ? JSON.parse(storedData) : [];
-    const item = data.find(x => x.id === id);
-
-    if (item) {
-        document.getElementById('editId').value = item.id;
-        document.getElementById('editName').value = item.full_name || '';
-        document.getElementById('editImage').value = item.attachment_url || '';
-
-        document.getElementById('editModal').style.display = 'flex';
-    }
-}
-
-function closeEditModal() {
-    document.getElementById('editModal').style.display = 'none';
-}
-
-function saveEdit() {
-    const id = parseInt(document.getElementById('editId').value);
-    const newImageUrl = document.getElementById('editImage').value;
-
-    const storedData = localStorage.getItem('feedback_data');
-    let data = storedData ? JSON.parse(storedData) : [];
-
-    const index = data.findIndex(x => x.id === id);
-    if (index !== -1) {
-        data[index].attachment_url = newImageUrl;
-        localStorage.setItem('feedback_data', JSON.stringify(data));
-
-        alert('Cập nhật thành công!');
-        closeEditModal();
-        fetchData();
-    } else {
-        alert('Không tìm thấy hồ sơ!');
-    }
 }
