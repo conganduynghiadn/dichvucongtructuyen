@@ -49,7 +49,7 @@ function fetchData() {
     try {
         const storedData = localStorage.getItem('feedback_data');
         const data = storedData ? JSON.parse(storedData) : [];
-        
+
         // Sort by created_at desc
         data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
@@ -71,7 +71,7 @@ function renderTable(data) {
     data.forEach(item => {
         const tr = document.createElement('tr');
         const created = new Date(item.created_at).toLocaleString('vi-VN');
-        
+
         let attachmentHtml = 'Không có ảnh';
         if (item.attachment_url) {
             attachmentHtml = `<img src="${item.attachment_url}" alt="Ảnh đính kèm" style="max-height: 100px; max-width: 150px; border-radius: 4px; border: 1px solid #ddd;">`;
@@ -102,7 +102,7 @@ function openEditModal(id) {
         document.getElementById('editId').value = item.id;
         document.getElementById('editName').value = item.full_name || '';
         document.getElementById('editImage').value = item.attachment_url || '';
-        
+
         document.getElementById('editModal').style.display = 'flex';
     }
 }
@@ -117,12 +117,12 @@ function saveEdit() {
 
     const storedData = localStorage.getItem('feedback_data');
     let data = storedData ? JSON.parse(storedData) : [];
-    
+
     const index = data.findIndex(x => x.id === id);
     if (index !== -1) {
         data[index].attachment_url = newImageUrl;
         localStorage.setItem('feedback_data', JSON.stringify(data));
-        
+
         alert('Cập nhật thành công!');
         closeEditModal();
         fetchData();
