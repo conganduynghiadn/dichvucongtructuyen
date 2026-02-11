@@ -181,6 +181,87 @@
             color: #666;
             font-style: italic;
         }
+
+        /* Thumbnail images in table */
+        .thumb-img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 2px solid #e0e0e0;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .thumb-img:hover {
+            transform: scale(1.15);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+            border-color: var(--primary-color);
+        }
+
+        /* Lightbox */
+        #imgLightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #imgLightbox.active {
+            display: flex;
+        }
+
+        .lightbox-backdrop {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(4px);
+        }
+
+        .lightbox-content {
+            position: relative;
+            z-index: 1;
+            max-width: 90vw;
+            max-height: 90vh;
+        }
+
+        .lightbox-content img {
+            max-width: 90vw;
+            max-height: 85vh;
+            border-radius: 8px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: none;
+            background: var(--accent-color);
+            color: white;
+            font-size: 1.4rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s;
+        }
+
+        .lightbox-close:hover {
+            transform: scale(1.1);
+        }
     </style>
 </head>
 
@@ -190,9 +271,9 @@
     <div id="loginOverlay">
         <div class="login-box">
             <img src="logo-cong-an-vector-1.png" alt="Logo" style="width: 60px; margin-bottom: 10px;">
-            <h2>ĐĂNG NHẬP QUẢN TRỊ</h2>
+            <h2>Đăng Nhập Quản Trị</h2>
             <input type="password" id="passwordInput" class="form-control" placeholder="Nhập mật khẩu truy cập...">
-            <button class="btn-login" onclick="checkLogin()">Đăng nhập vào hệ thống</button>
+            <button class="btn-login" onclick="checkLogin()">Vào Hệ Thống</button>
             <p id="errorMsg" style="color: red; margin-top: 10px; display: none;">Mật khẩu không đúng!</p>
         </div>
     </div>
@@ -201,8 +282,8 @@
     <div class="dashboard" id="mainDashboard">
         <div class="header">
             <div>
-                <h1>QUẢN LÝ HỒ SƠ</h1>
-                <p>Tiếp nhận phản ánh về Dịch vụ công trực tuyến</p>
+                <h1>Quản Lý Hồ Sơ</h1>
+                <p>Tiếp nhận phản ánh & đăng ký trực tuyến</p>
             </div>
             <button class="btn-refresh" onclick="fetchData()">
                 <i class="fas fa-sync-alt"></i> Tải lại dữ liệu
@@ -229,11 +310,7 @@
         </div>
     </div>
 
-
-
     <script src="admin.js"></script>
 </body>
 
-
 </html>
-

@@ -63,11 +63,25 @@ function renderTable(data) {
     data.forEach(item => {
         const tr = document.createElement('tr');
         const created = new Date(item.created_at).toLocaleString('vi-VN');
-        const attachment = item.attachment_url
-            ? `<a href="${item.attachment_url}" target="_blank" title="Xem ảnh gốc">
-                 <img src="${item.attachment_url}" alt="Ảnh" style="height:60px; width:auto; border-radius:4px; border:1px solid #ddd; object-fit:cover;">
-               </a>`
-            : '<span style="color:#999; font-size:0.9rem">Không có</span>';
+
+        let attachment = 'Không';
+        if (item.attachment_url) {
+            const url = item.attachment_url;
+            const isBase64Image = url.startsWith('data:image');
+            const isUrlImage = /\.(jpg|jpeg|png|gif|webp|bmp|svg)(\?.*)?$/i.test(url) ||
+                (url.includes('supabase.co/storage') && !url.endsWith('.pdf') && !url.endsWith('.doc') && !url.endsWith('.docx'));
+
+            if (isBase64Image || isUrlImage) {
+                // Show inline thumbnail for all images (Base64 or URL)
+                attachment = `<img src="${url}" class="thumb-img" onclick="openLightbox(this.src)" title="Click để xem full" onerror="this.outerHTML='<a href=&quot;${url}&quot; target=&quot;_blank&quot; class=&quot;attachment-link&quot;><i class=&quot;fas fa-external-link-alt&quot;></i> Xem File</a>'">`;
+            } else if (url.startsWith('data:')) {
+                // Base64 non-image file (PDF, etc)
+                attachment = `<a href="${url}" download class="attachment-link"><i class="fas fa-download"></i> Tải file</a>`;
+            } else {
+                // Other URL (PDF, doc, etc)
+                attachment = `<a href="${url}" target="_blank" class="attachment-link"><i class="fas fa-external-link-alt"></i> Xem File</a>`;
+            }
+        }
 
         tr.innerHTML = `
             <td>${created}</td>
@@ -79,4 +93,32 @@ function renderTable(data) {
         `;
         tbody.appendChild(tr);
     });
+}
+
+// ===== Lightbox =====
+function openLightbox(src) {
+    let overlay = document.getElementById('imgLightbox');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'imgLightbox';
+        overlay.innerHTML = `
+            <div class="lightbox-backdrop" onclick="closeLightbox()"></div>
+            <div class="lightbox-content">
+                <img id="lightboxImg" src="" alt="Ảnh đính kèm">
+                <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+            </div>
+        `;
+        document.body.appendChild(overlay);
+    }
+    document.getElementById('lightboxImg').src = src;
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+    const overlay = document.getElementById('imgLightbox');
+    if (overlay) {
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
 }
